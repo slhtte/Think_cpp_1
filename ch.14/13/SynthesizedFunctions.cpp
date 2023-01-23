@@ -1,0 +1,90 @@
+//: C14:SynthesizedFunctions.cpp
+// Функции, сгенерированные компилятором
+#include <iostream>
+using namespace std;
+
+class GameBoard {
+public:
+  GameBoard() { cout << "GameBoard()\n"; }
+  GameBoard(const GameBoard&) { 
+    cout << "GameBoard(const GameBoard&)\n"; 
+  }
+  GameBoard& operator=(const GameBoard&) {
+    cout << "GameBoard::operator=()\n";
+    return *this;
+  }
+  ~GameBoard() { cout << "~GameBoard()\n"; }
+};
+
+class Game {
+  GameBoard gb; // Композиция
+public:
+  // Вызов конструктора по умолчанию для GameBoard:
+  Game() { cout << "Game()\n"; }
+  // Копирующий конструктор GameBoard должен вызываться явно,
+  // иначе вместо него будет автоматически вызван
+  // конструктор по умолчанию:
+  Game(const Game& g) : gb(g.gb) { 
+    cout << "Game(const Game&)\n"; 
+  }
+  Game(int) { cout << "Game(int)\n"; }
+  Game& operator=(const Game& g) {
+    // Оператор присваивания для GameBoard должен вызываться явно,
+    // иначе gb вообще не будет присвоено значение!
+    gb = g.gb;
+    cout << "Game::operator=()\n";
+    return *this;
+  }
+  class Other {}; // Вложенный класс
+  // Автоматическое приведение типа:
+  operator Other() const {
+    cout << "Game::operator Other()\n";
+    return Other();
+  }
+  ~Game() { cout << "~Game()\n"; }
+};
+
+class Chess : public Game 
+{
+public:
+  Chess() { cout << "Chess()\n"; }
+  Chess(const Chess &chess) : Game(chess) { cout << "Chess(const Chess&)\n"; }
+  Chess& operator=(const Chess &chess)
+  {
+    Game::operator=(chess);
+    cout << "Chess::operator=()\n";
+  }
+};
+
+void f(Game::Other) {}
+
+class Checkers : public Game {
+public:
+  // Вызов конструктора по умолчанию для базового класса:
+  Checkers() { cout << "Checkers()\n"; }
+  // Копирующий конструктор базового класса должен вызываться явно,
+  // иначе вместо него будет автоматически вызван
+  // конструктор по умолчанию:
+  Checkers(const Checkers& c) : Game(c) {
+    cout << "Checkers(const Checkers& c)\n";
+  }
+  Checkers& operator=(const Checkers& c) {
+    // Версия operator=() для базового класса должна вызываться явно,
+    // иначе подобъект базового класса не участвует в присваивании!
+    Game::operator=(c);
+    cout << "Checkers::operator=()\n";
+    return *this;
+  }
+};
+
+int main() {
+  Chess d1;  // Конструктор по умолчанию
+  Chess d2(d1); // Копирующий конструктор
+//! Chess d3(1); // Ошибка: нет конструктора с int
+  d1 = d2; // Генерируется функция operator=
+  f(d1); // Приведение типа НАСЛЕДУЕТСЯ
+  Game::Other go;
+//!  d1 = go; // Для другого типа operator= не генерируется
+  Checkers c1, c2(c1);
+  c1 = c2;
+} ///:~

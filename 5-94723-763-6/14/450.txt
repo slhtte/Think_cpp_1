@@ -1,0 +1,22 @@
+//: C14:Instrument.cpp
+// Наследование и повышающее приведение типа
+enum note { middleC, Csharp, Cflat }; // И т. д.
+
+class Instrument {
+public:
+  void play(note) const {}
+};
+
+// Духовые музыкальные инструменты (Wind) являются музыкальными 
+// инструментами (Instrument), поскольку обладают тем же интерфейсом:
+class Wind : public Instrument {};
+
+void tune(Instrument& i) {
+  // ...
+  i.play(middleC);
+}
+
+int main() {
+  Wind flute;
+  tune(flute); // Повышающее приведение типа
+} ///:~

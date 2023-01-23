@@ -1,0 +1,42 @@
+Creating Dog: [Fido], rc = 1
+Created DogHouse: [FidoHouse]
+contains [Fido], rc = 1
+Creating Dog: [Spot], rc = 1
+Created DogHouse: [SpotHouse]
+contains [Spot], rc = 1
+Entering copy-construction
+Attached Dog: [Fido], rc = 2
+DogHouse copy-constructor:
+[copy-constructed FidoHouse]
+contains [Fido], rc = 2
+After copy-constructing bobs
+fidos:[FidoHouse] contains [Fido], rc = 2
+spots:[SpotHouse] contains [Spot], rc = 1
+bob:[copy-constructed FidoHouse]
+contains [Fido], rc = 2
+Entering spots = fidos
+Detaching Dog: [Spot], rc = 1
+Deleting Dog: [Spot], rc = 0
+Attached Dog: [Fido], rc = 3
+DogHouse operator= : [FidoHouse assigned]
+contains [Fido], rc = 3
+After spots = fidos
+spots:[FidoHouse assigned] contains [Fido],rc = 3
+Entering self-assignment
+DogHouse operator= : [copy-constructed FidoHouse]
+contains [Fido], rc = 3
+After self-assignment
+bobs:[copy-constructed FidoHouse]
+contains [Fido], rc = 3
+Entering rename("Bob")
+After rename("Bob")
+DogHouse destructor: [copy-constructed FidoHouse]
+contains [Fido], rc = 3
+Detaching Dog: [Fido], rc = 3
+DogHouse destructor: [FidoHouse assigned]
+contains [Fido], rc = 2
+Detaching Dog: [Fido], rc = 2
+DogHouse destructor: [FidoHouse]
+contains [Fido], rc = 1
+Detaching Dog: [Fido], rc = 1
+Deleting Dog: [Fido], rc = 0

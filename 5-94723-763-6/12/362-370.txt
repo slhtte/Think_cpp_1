@@ -1,0 +1,490 @@
+//: C12:Integer.h
+// Глобальные перегруженные операторы
+#ifndef INTEGER_H
+#define INTEGER_H
+#include <iostream>
+
+// Глобальные функции:
+class Integer { 
+  long i;
+public:
+  Integer(long ll = 0) : i(ll) {}
+  // Операторы, создающие новое, модифицированное значение:
+  friend const Integer
+    operator+(const Integer& left,
+              const Integer& right);
+  friend const Integer
+    operator-(const Integer& left,
+              const Integer& right);
+  friend const Integer
+    operator*(const Integer& left,
+              const Integer& right);
+  friend const Integer
+    operator/(const Integer& left,
+              const Integer& right);
+  friend const Integer
+    operator%(const Integer& left,
+              const Integer& right);
+  friend const Integer
+    operator^(const Integer& left,
+              const Integer& right);
+  friend const Integer
+    operator&(const Integer& left,
+              const Integer& right);
+  friend const Integer
+    operator|(const Integer& left,
+              const Integer& right);
+  friend const Integer
+    operator<<(const Integer& left,
+               const Integer& right);
+  friend const Integer
+    operator>>(const Integer& left,
+               const Integer& right);
+  // Комбинированные операторы присваивания
+  // изменяют и возвращают l-значение:
+  friend Integer&
+    operator+=(Integer& left,
+               const Integer& right);
+  friend Integer&
+    operator-=(Integer& left,
+               const Integer& right);
+  friend Integer&
+    operator*=(Integer& left,
+               const Integer& right);
+  friend Integer&
+    operator/=(Integer& left,
+               const Integer& right);
+  friend Integer&
+    operator%=(Integer& left,
+               const Integer& right);
+  friend Integer&
+    operator^=(Integer& left,
+               const Integer& right);
+  friend Integer&
+    operator&=(Integer& left,
+               const Integer& right);
+  friend Integer&
+    operator|=(Integer& left,
+               const Integer& right);
+  friend Integer&
+    operator>>=(Integer& left,
+                const Integer& right);
+  friend Integer&
+    operator<<=(Integer& left,
+                const Integer& right);
+  // Условные операторы возвращают true или false:
+  friend int
+    operator==(const Integer& left,
+               const Integer& right);
+  friend int
+    operator!=(const Integer& left,
+               const Integer& right);
+  friend int
+    operator<(const Integer& left,
+              const Integer& right);
+  friend int
+    operator>(const Integer& left,
+              const Integer& right);
+  friend int
+    operator<=(const Integer& left,
+               const Integer& right);
+  friend int
+    operator>=(const Integer& left,
+               const Integer& right);
+  friend int
+    operator&&(const Integer& left,
+               const Integer& right);
+  friend int
+    operator||(const Integer& left,
+               const Integer& right);
+  // Вывод содержимого в выходной поток:
+  void print(std::ostream& os) const { os << i; }
+}; 
+#endif // INTEGER_H ///:~
+
+//: C12:Integer.cpp {O}
+// Реализация перегруженных операторов
+#include "Integer.h"
+#include "../require.h"
+
+const Integer
+  operator+(const Integer& left,
+            const Integer& right) {
+  return Integer(left.i + right.i);
+}
+const Integer
+  operator-(const Integer& left,
+            const Integer& right) {
+  return Integer(left.i - right.i);
+}
+const Integer
+  operator*(const Integer& left,
+            const Integer& right) {
+  return Integer(left.i * right.i);
+}
+const Integer
+  operator/(const Integer& left,
+            const Integer& right) {
+  require(right.i != 0, "divide by zero");
+  return Integer(left.i / right.i);
+}
+const Integer
+  operator%(const Integer& left,
+            const Integer& right) {
+  require(right.i != 0, "modulo by zero");
+  return Integer(left.i % right.i);
+}
+const Integer
+  operator^(const Integer& left,
+            const Integer& right) {
+  return Integer(left.i ^ right.i);
+}
+const Integer
+  operator&(const Integer& left,
+            const Integer& right) {
+  return Integer(left.i & right.i);
+}
+const Integer
+  operator|(const Integer& left,
+            const Integer& right) {
+  return Integer(left.i | right.i);
+}
+const Integer
+  operator<<(const Integer& left,
+             const Integer& right) {
+  return Integer(left.i << right.i);
+}
+const Integer
+  operator>>(const Integer& left,
+             const Integer& right) {
+  return Integer(left.i >> right.i);
+}
+// Комбинированные операторы присваивания
+// изменяют и возвращают l-значение:
+Integer& operator+=(Integer& left,
+                    const Integer& right) {
+   if(&left == &right) {/* самоприсваивание */}
+   left.i += right.i;
+   return left;
+}
+Integer& operator-=(Integer& left,
+                    const Integer& right) {
+   if(&left == &right) {/* самоприсваивание */}
+   left.i -= right.i;
+   return left;
+}
+Integer& operator*=(Integer& left,
+                    const Integer& right) {
+   if(&left == &right) {/* самоприсваивание */}
+   left.i *= right.i;
+   return left;
+}
+Integer& operator/=(Integer& left,
+                    const Integer& right) {
+   require(right.i != 0, "divide by zero");
+  if(&left == &right) {/* самоприсваивание */}
+left.i /= right.i;
+return left;
+}
+Integer& operator%=(Integer& left,
+const Integer& right) {
+require(right.i != 0, "modulo by zero");
+if(&left == &right) {/* самоприсваивание */}
+left.i %= right.i;
+return left;
+}
+Integer& operator^=(Integer& left,
+const Integer& right) {
+if(&left == &right) {/* самоприсваивание */}
+left.i ^= right.i;
+return left;
+}
+Integer& operator&=(Integer& left,
+const Integer& right) {
+if(&left == &right) {/* самоприсваивание */}
+left.i &= right.i;
+return left;
+}
+Integer& operator|=(Integer& left,
+const Integer& right) {
+if(&left == &right) {/* самоприсваивание */}
+left.i |= right.i;
+return left;
+}
+Integer& operator>>=(Integer& left,
+const Integer& right) {
+if(&left == &right) {/* самоприсваивание */}
+left.i >>= right.i;
+return left;
+}
+Integer& operator<<=(Integer& left,
+const Integer& right) {
+if(&left == &right) {/* самоприсваивание */}
+left.i <<= right.i;
+return left;
+}
+// Условные операторы возвращают true или false:
+int operator==(const Integer& left,
+const Integer& right) {
+return left.i == right.i;
+}
+int operator!=(const Integer& left,
+const Integer& right) {
+return left.i != right.i;
+}
+int operator<(const Integer& left,
+const Integer& right) {
+return left.i < right.i;
+}
+int operator>(const Integer& left,
+const Integer& right) {
+return left.i > right.i;
+}
+int operator<=(const Integer& left,
+const Integer& right) {
+return left.i <= right.i;
+}
+int operator>=(const Integer& left,
+const Integer& right) {
+return left.i >= right.i;
+}
+int operator&&(const Integer& left,
+const Integer& right) {
+return left.i && right.i;
+}
+int operator||(const Integer& left,
+const Integer& right) {
+return left.i || right.i;
+} ///:~
+
+//: C12:IntegerTest.cpp
+//{L} Integer
+#include "Integer.h"
+#include <fstream>
+using namespace std;
+ofstream out("IntegerTest.out");
+
+void h(Integer& c1, Integer& c2) {
+// Сложное выражение:
+c1 += c1 * c2 + c2 % c1;
+#define TRY(OP) \
+out << "c1 = "; c1.print(out); \
+out << ", c2 = "; c2.print(out); \
+out << "; c1 " #OP " c2 produces "; \
+(c1 OP c2).print(out); \
+out << endl;
+TRY(+) TRY(-) TRY(*) TRY(/)
+TRY(%) TRY(^) TRY(&) TRY(|)
+TRY(<<) TRY(>>) TRY(+=) TRY(-=)
+TRY(*=) TRY(/=) TRY(%=) TRY(^=)
+TRY(&=) TRY(|=) TRY(>>=) TRY(<<=)
+// Условные операторы:
+#define TRYC(OP) \
+out << "c1 = "; c1.print(out); \
+out << ", c2 = "; c2.print(out); \
+out << "; c1 " #OP " c2 produces "; \
+out << (c1 OP c2); \
+out << endl;
+TRYC(<) TRYC(>) TRYC(==) TRYC(!=) TRYC(<=)
+TRYC(>=) TRYC(&&) TRYC(||)
+}
+
+int main() {
+cout << "friend functions" << endl;
+Integer c1(47), c2(9);
+h(c1, c2);
+} ///:~
+
+//: C12:Byte.h
+// Перегрузка операторов в форме функций класса
+#ifndef BYTE_H
+#define BYTE_H
+#include "../require.h"
+#include <iostream>
+// Функции классов (с неявным аргументом "this"):
+class Byte {
+unsigned char b;
+public:
+Byte(unsigned char bb = 0) : b(bb) {}
+// Побочные эффекты отсутствуют: константная функция класса:
+const Byte
+operator+(const Byte& right) const {
+return Byte(b + right.b);
+}
+const Byte
+operator-(const Byte& right) const {
+return Byte(b - right.b);
+}
+const Byte
+operator*(const Byte& right) const {
+return Byte(b * right.b);
+}
+const Byte
+operator/(const Byte& right) const {
+require(right.b != 0, "divide by zero");
+return Byte(b / right.b);
+}
+const Byte
+operator%(const Byte& right) const {
+require(right.b != 0, "modulo by zero");
+return Byte(b % right.b);
+}
+const Byte
+operator^(const Byte& right) const {
+return Byte(b ^ right.b);
+}
+const Byte
+operator&(const Byte& right) const {
+return Byte(b & right.b);
+}
+const Byte
+operator|(const Byte& right) const {
+return Byte(b | right.b);
+}
+const Byte
+operator<<(const Byte& right) const {
+return Byte(b << right.b);
+}
+const Byte
+operator>>(const Byte& right) const {
+return Byte(b >> right.b);
+}
+// Комбинированные операторы присваивания
+// изменяют и возвращают l-значение:
+// оператор = может быть только функцией класса:
+Byte& operator=(const Byte& right) {
+// Самоприсваивание:
+if(this == &right) return *this;
+b = right.b;
+return *this;
+}
+Byte& operator+=(const Byte& right) {
+if(this == &right) {/* самоприсваивание */}
+b += right.b;
+return *this;
+}
+Byte& operator-=(const Byte& right) {
+if(this == &right) {/* самоприсваивание */}
+b -= right.b;
+return *this;
+}
+Byte& operator*=(const Byte& right) {
+if(this == &right) {/* самоприсваивание */}
+b *= right.b;
+return *this;
+}
+Byte& operator/=(const Byte& right) {
+require(right.b != 0, "divide by zero");
+if(this == &right) {/* самоприсваивание */}
+b /= right.b;
+return *this;
+}
+Byte& operator%=(const Byte& right) {
+require(right.b != 0, "modulo by zero");
+if(this == &right) {/* самоприсваивание */}
+b %= right.b;
+return *this;
+}
+Byte& operator^=(const Byte& right) {
+if(this == &right) {/* самоприсваивание */}
+b ^= right.b;
+return *this;
+}
+Byte& operator&=(const Byte& right) {
+if(this == &right) {/* самоприсваивание */}
+b &= right.b;
+return *this;
+}
+Byte& operator|=(const Byte& right) {
+if(this == &right) {/* самоприсваивание */}
+b |= right.b;
+return *this;
+}
+Byte& operator>>=(const Byte& right) {
+if(this == &right) {/* самоприсваивание */}
+b >>= right.b;
+return *this;
+}
+Byte& operator<<=(const Byte& right) {
+if(this == &right) {/* самоприсваивание */}
+b <<= right.b;
+return *this;
+}
+// Условные операторы возвращают true или false:
+int operator==(const Byte& right) const {
+return b == right.b;
+}
+int operator!=(const Byte& right) const {
+return b != right.b;
+}
+int operator<(const Byte& right) const {
+return b < right.b;
+}
+int operator>(const Byte& right) const {
+return b > right.b;
+}
+int operator<=(const Byte& right) const {
+return b <= right.b;
+}
+int operator>=(const Byte& right) const {
+return b >= right.b;
+}
+int operator&&(const Byte& right) const {
+return b && right.b;
+}
+int operator||(const Byte& right) const {
+return b || right.b;
+}
+// Вывод содержимого в выходной поток:
+void print(std::ostream& os) const {
+os << "0x" << std::hex << int(b) << std::dec;
+}
+};
+#endif // BYTE_H ///:~
+
+//: C12:ByteTest.cpp
+#include "Byte.h"
+#include <fstream>
+using namespace std;
+ofstream out("ByteTest.out");
+
+void k(Byte& b1, Byte& b2) {
+b1 = b1 * b2 + b2 % b1;
+
+#define TRY2(OP) \
+out << "b1 = "; b1.print(out); \
+out << ", b2 = "; b2.print(out); \
+out << "; b1 " #OP " b2 produces "; \
+(b1 OP b2).print(out); \
+out << endl;
+
+b1 = 9; b2 = 47;
+TRY2(+) TRY2(-) TRY2(*) TRY2(/)
+TRY2(%) TRY2(^) TRY2(&) TRY2(|)
+TRY2(<<) TRY2(>>) TRY2(+=) TRY2(-=)
+TRY2(*=) TRY2(/=) TRY2(%=) TRY2(^=)
+TRY2(&=) TRY2(|=) TRY2(>>=) TRY2(<<=)
+TRY2(=) // Оператор присваивания
+
+// Условные операторы:
+#define TRYC2(OP) \
+out << "b1 = "; b1.print(out); \
+out << ", b2 = "; b2.print(out); \
+out << "; b1 " #OP " b2 produces "; \
+out << (b1 OP b2); \
+out << endl;
+
+b1 = 9; b2 = 47;
+TRYC2(<) TRYC2(>) TRYC2(==) TRYC2(!=) TRYC2(<=)
+TRYC2(>=) TRYC2(&&) TRYC2(||)
+
+// Цепочечное присваивание:
+Byte b3 = 92;
+b1 = b2 = b3;
+}
+
+int main() {
+out << "member functions:" << endl;
+Byte b1(47), b2(9);
+k(b1, b2);
+} ///:~

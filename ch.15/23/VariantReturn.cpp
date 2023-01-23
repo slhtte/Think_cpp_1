@@ -1,0 +1,64 @@
+//: C15:VariantReturn.cpp
+// Возвращение указателя или ссылки на производный тип
+// при переопределении функции
+#include <iostream>
+#include <string>
+using namespace std;
+
+class PetFood {
+public:
+  virtual string foodType() const = 0;
+};
+
+class Pet {
+public:
+  virtual string type() const = 0;
+  virtual PetFood* eats() = 0;
+  virtual const PetFood& eats() const = 0;
+};
+
+class Bird : public Pet {
+public:
+  string type() const { return "Bird"; }
+  class BirdFood : public PetFood {
+  public:
+    string foodType() const { 
+      return "Bird food"; 
+    }
+  };
+  // Повышающее приведение к базовому типу:
+  PetFood* eats() { return &bf; }
+  const PetFood& eats() const { return bf; }
+private:
+  BirdFood bf;
+};
+
+class Cat : public Pet {
+public:
+  string type() const { return "Cat"; }
+  class CatFood : public PetFood {
+  public:
+    string foodType() const { return "Birds"; }
+  };
+  // Возвращение фактического типа:
+  CatFood* eats() { return &cf; }
+  const CatFood& eats() const  { return cf; }
+private:
+  CatFood cf;
+};
+
+int main() {
+  Bird b; 
+  Cat c;
+  Pet* p[] = { &b, &c, };
+  for(int i = 0; i < sizeof p / sizeof *p; i++)
+    cout << p[i]->type() << " eats "
+         << p[i]->eats()->foodType() << endl;
+  // Может возвращать фактический тип:
+  Cat::CatFood* cf = c.eats();
+  Bird::BirdFood* bf;
+  // Не может возвращать фактический тип:
+//!  bf = b.eats();
+  // Необходимо понижающее приведение типа:
+  bf = dynamic_cast<Bird::BirdFood*>(b.eats());
+} ///:~

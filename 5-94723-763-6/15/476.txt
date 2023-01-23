@@ -1,0 +1,34 @@
+//: C15:PureVirtualDefinitions.cpp
+// Определения чисто виртуальных функций в базовом классе
+#include <iostream>
+using namespace std;
+
+class Pet {
+public:
+  virtual void speak() const = 0;
+  virtual void eat() const = 0;
+  // Подстановка определений чисто виртуальных функций запрещена:
+  //!  virtual void sleep() const = 0 {}
+};
+
+// Можно, функция не является подставляемой
+void Pet::eat() const {
+  cout << "Pet::eat()" << endl;
+}
+
+void Pet::speak() const { 
+  cout << "Pet::speak()" << endl;
+}
+
+class Dog : public Pet {
+public:
+  // Использование общего кода Pet:
+  void speak() const { Pet::speak(); }
+  void eat() const { Pet::eat(); }
+};
+
+int main() {
+  Dog simba;
+  simba.speak();
+  simba.eat();
+} ///:~

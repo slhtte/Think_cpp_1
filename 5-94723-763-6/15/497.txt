@@ -1,0 +1,38 @@
+//: C15:StaticHierarchyNavigation.cpp
+// Перемещение по иерархии классов с применением оператора static_cast
+#include <iostream>
+#include <typeinfo>
+using namespace std;
+
+class Shape { public: virtual ~Shape() {}; };
+class Circle : public Shape {};
+class Square : public Shape {};
+class Other {};
+
+int main() {
+  Circle c;
+  Shape* s = &c; // Повышающее приведение типа: все нормально
+  // Более очевидная, но не обязательная форма:
+  s = static_cast<Shape*>(&c);
+  // (Поскольку повышающее приведение типа является безопасной
+  // и часто выполняемой операцией, static_cast лишь загромождает программу)
+  Circle* cp = 0;
+  Square* sp = 0;
+  // Для статического перемещения по иерархии классов
+  // необходима дополнительная информация о типе:
+  if(typeid(s) == typeid(cp)) // C++ RTTI
+    cp = static_cast<Circle*>(s);
+  if(typeid(s) == typeid(sp))
+    sp = static_cast<Square*>(s);
+  if(cp != 0)
+    cout << "It's a circle!" << endl;
+  if(sp != 0)
+    cout << "It's a square!" << endl;
+  // Статическое перемещение используется ТОЛЬКО
+  // для повышения эффективности; dynamic_cast всегда безопаснее.
+  // Команда
+  // Other* op = static_cast<Other*>(s);
+  // выдает полезное сообщение об ошибке, тогда как для
+  Other* op2 = (Other*)s;
+  // такое сообщение не выдается.
+} ///:~

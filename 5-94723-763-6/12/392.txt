@@ -1,0 +1,19 @@
+//: C12:ExplicitKeyword.cpp
+// Ключевое слово "explicit"
+class One {
+public:
+One() {}
+};
+
+class Two {
+public:
+explicit Two(const One&) {}
+};
+
+void f(Two) {}
+
+int main() {
+One one;
+//! f(one); // Автоматическое приведение типа запрещено
+f(Two(one)); // Можно -- приведение типа выполняется пользователем
+} ///:~

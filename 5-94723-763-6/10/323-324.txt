@@ -1,0 +1,37 @@
+//: C10:Technique2.cpp
+#include "Dependency2.h"
+using namespace std;
+
+// Функция возвращает значение, чтобы она могла вызываться
+// как глобальное инициализирующее значение:
+int separator() {
+  cout << "---------------------" << endl;
+  return 1;
+}
+
+// Имитация проблемы с зависимостью от порядка инициализации:
+extern Dependency1 dep1;
+Dependency2 dep2(dep1);
+Dependency1 dep1;
+int x1 = separator();
+
+// Но если инициализация выполняется в обратном порядке,
+// все работает нормально:
+Dependency1 dep1b;
+Dependency2 dep2b(dep1b);
+int x2 = separator();
+
+// Включение статических объектов в функции решает проблему:
+Dependency1& d1() {
+  static Dependency1 dep1;
+  return dep1;
+}
+
+Dependency2& d2() {
+  static Dependency2 dep2(d1());
+  return dep2;
+}
+
+int main() {
+  Dependency2& dep2 = d2();
+} ///:~

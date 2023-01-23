@@ -1,0 +1,28 @@
+//: C16:ValueStack.h
+// Хранение объектов по значению в стеке
+#ifndef VALUESTACK_H
+#define VALUESTACK_H
+#include "../require.h"
+
+template<class T, int ssize = 100>
+class Stack {
+  // Конструктор по умолчанию выполняет инициализацию
+  // для каждого элемента в массиве:
+  T stack[ssize];
+  int top;
+public:
+  Stack() : top(0) {}
+  // Копирующий конструктор копирует объект в массив:
+  void push(const T& x) {
+    require(top < ssize, "Too many push()es");
+    stack[top++] = x;
+  }
+  T peek() const { return stack[top]; }
+  // Извлеченный объект продолжает существовать;
+  // просто он становится недоступным:
+  T pop() {
+    require(top > 0, "Too many pop()s");
+    return stack[--top];
+  }
+};
+#endif // VALUESTACK_H ///:~

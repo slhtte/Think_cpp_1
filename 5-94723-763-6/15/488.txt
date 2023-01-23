@@ -1,0 +1,14 @@
+//: C15:UnAbstract.cpp
+// Странное поведение чисто виртуальных деструкторов
+
+class AbstractBase {
+public:
+  virtual ~AbstractBase() = 0;
+};
+
+AbstractBase::~AbstractBase() {}
+
+class Derived : public AbstractBase {};
+// Переопределять деструктор не обязательно?
+
+int main() { Derived d; } ///:~

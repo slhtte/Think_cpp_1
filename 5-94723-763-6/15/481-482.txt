@@ -1,0 +1,62 @@
+//: C15:NameHiding2.cpp
+// Виртуальные функции ограничивают перегрузку
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Base {
+public:
+  virtual int f() const { 
+    cout << "Base::f()\n"; 
+    return 1; 
+  }
+  virtual void f(string) const {}
+  virtual void g() const {}
+};
+
+class Derived1 : public Base {
+public:
+  void g() const {}
+};
+
+class Derived2 : public Base {
+public:
+  // Переопределение виртуальной функции:
+  int f() const { 
+    cout << "Derived2::f()\n"; 
+    return 2;
+  }
+};
+
+class Derived3 : public Base {
+public:
+  // Невозможно изменить тип возвращаемого значения:
+  //! void f() const{ cout << "Derived3::f()\n";}
+};
+
+class Derived4 : public Base {
+public:
+  // Изменение списка аргументов:
+  int f(int) const { 
+    cout << "Derived4::f()\n"; 
+    return 4; 
+  }
+};
+
+int main() {
+  string s("hello");
+  Derived1 d1;
+  int x = d1.f();
+  d1.f(s);
+  Derived2 d2;
+  x = d2.f();
+//!  d2.f(s); // Строковая версия скрывается
+  Derived4 d4;
+  x = d4.f(1);
+//!  x = d4.f(); // Версия f() скрывается
+//!  d4.f(s); // Строковая версия скрывается
+  Base& br = d4; // Повышающее приведение типа
+//!  br.f(1); // Производная версия недоступна
+  br.f(); // Базовая версия доступна
+  br.f(s); // Базовая версия доступна
+} ///:~

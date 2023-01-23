@@ -1,0 +1,22 @@
+//: C12:Strings1.cpp
+// Автоматическое приведение типа отсутствует
+#include "../require.h"
+#include <cstring>
+#include <cstdlib>
+#include <string>
+using namespace std;
+
+class Stringc {
+string s;
+public:
+Stringc(const string& str = "") : s(str) {}
+int strcmp(const Stringc& S) const {
+return ::strcmp(s.c_str(), S.s.c_str());
+}
+// ... и т. д. для всех функций в string.h
+};
+
+int main() {
+Stringc s1("hello"), s2("there");
+s1.strcmp(s2);
+} ///:~

@@ -1,0 +1,21 @@
+//: C02:Declare.cpp
+// Примеры объявлений и определений
+extern int i; // Объявление без определения
+extern float f(float); // Объявление функции
+
+float b;  // Объявление и определение
+float f(float a) {  // Определение
+  return a + 1.0;
+}
+
+int i; // Definition
+int h(int x) { // Объявление и определение
+  return x + 1;
+}
+
+int main() {
+  b = 1.0;
+  i = 2;
+  f(b);
+  h(i);
+} ///:~

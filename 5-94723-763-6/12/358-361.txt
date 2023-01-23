@@ -1,0 +1,166 @@
+//: C12:OverloadingUnaryOperators.cpp
+#include <iostream>
+using namespace std;
+
+// Глобальные функции:
+class Integer {
+  long i;
+  Integer* This() { return this; }
+public:
+  Integer(long ll = 0) : i(ll) {}
+  // Побочные эффекты отсутствуют, оператор получает аргумент const&:
+  friend const Integer&
+    operator+(const Integer& a);
+  friend const Integer
+    operator-(const Integer& a);
+  friend const Integer
+    operator~(const Integer& a);
+  friend Integer*
+    operator&(Integer& a);
+  friend int
+    operator!(const Integer& a);
+  // Побочные эффекты, аргумент отличен от const&:
+  // Префиксная версия:
+  friend const Integer&
+    operator++(Integer& a);
+  // Постфиксная версия:
+  friend const Integer
+    operator++(Integer& a, int);
+  // Префиксная версия:
+  friend const Integer&
+    operator--(Integer& a);
+  // Постфиксная версия:
+  friend const Integer
+    operator--(Integer& a, int);
+};
+
+// Глобальные операторы:
+const Integer& operator+(const Integer& a) {
+  cout << "+Integer\n";
+  return a; // Унарный оператор + ничего не делает
+}
+const Integer operator-(const Integer& a) {
+  cout << "-Integer\n";
+  return Integer(-a.i);
+}
+const Integer operator~(const Integer& a) {
+  cout << "~Integer\n";
+  return Integer(~a.i);
+}
+Integer* operator&(Integer& a) {
+  cout << "&Integer\n";
+  return a.This(); // &a is recursive!
+}
+int operator!(const Integer& a) {
+  cout << "!Integer\n";
+  return !a.i;
+}
+// Префиксная версия; возвращает значение после инкремента
+const Integer& operator++(Integer& a) {
+  cout << "++Integer\n";
+  a.i++;
+  return a;
+}
+// Постфиксная версия; возвращает значение перед инкрементом
+const Integer operator++(Integer& a, int) {
+  cout << "Integer++\n";
+  Integer before(a.i);
+  a.i++;
+  return before;
+}
+// Префиксная версия; возвращает значение после декремента
+const Integer& operator--(Integer& a) {
+  cout << "--Integer\n";
+  a.i--;
+  return a;
+}
+// Постфиксная версия; возвращает значение перед декрементом
+const Integer operator--(Integer& a, int) {
+  cout << "Integer--\n";
+  Integer before(a.i);
+  a.i--;
+  return before;
+}
+
+// Проверка работы перегруженных операторов:
+void f(Integer a) {
+  +a;
+  -a;
+  ~a;
+  Integer* ip = &a;
+  !a;
+  ++a;
+  a++;
+  --a;
+  a--;
+}
+
+// Функции классов (с неявным аргументом "this"):
+class Byte {
+  unsigned char b;
+public:
+  Byte(unsigned char bb = 0) : b(bb) {}
+  // Побочные эффекты отсутствуют: константная функция класса:
+  const Byte& operator+() const {
+    cout << "+Byte\n";
+    return *this;
+  }
+  const Byte operator-() const {
+    cout << "-Byte\n";
+    return Byte(-b);
+  }
+  const Byte operator~() const {
+    cout << "~Byte\n";
+    return Byte(~b);
+  }
+  Byte operator!() const {
+    cout << "!Byte\n";
+    return Byte(!b);
+  }
+  Byte* operator&() {
+    cout << "&Byte\n";
+    return this;
+  }
+  // Побочные эффекты; неконстантная функция класса
+  const Byte& operator++() { // Префиксная версия
+    cout << "++Byte\n";
+    b++;
+    return *this;
+  }
+  const Byte operator++(int) { // Постфиксная версия
+    cout << "Byte++\n";
+    Byte before(b);
+    b++;
+    return before;
+  }
+  const Byte& operator--() { // Префиксная версия
+    cout << "--Byte\n";
+    --b;
+    return *this;
+  }
+  const Byte operator--(int) { // Постфиксная версия
+    cout << "Byte--\n";
+    Byte before(b);
+    --b;
+    return before;
+  }
+};
+
+void g(Byte b) {
+  +b;
+  -b;
+  ~b;
+  Byte* bp = &b;
+  !b;
+  ++b;
+  b++;
+  --b;
+  b--;
+}
+
+int main() {
+  Integer a;
+  f(a);
+  Byte b;
+  g(b);
+} ///:~

@@ -1,0 +1,25 @@
+//: C16:OwnerStackTest.cpp
+//{L} AutoCounter 
+#include "AutoCounter.h"
+#include "OwnerStack.h"
+#include "../../require.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+  Stack<AutoCounter> ac; // ”правление принадлежностью объектов
+  Stack<AutoCounter> ac2(false); // ќтключение
+  AutoCounter* ap;
+  for(int i = 0; i < 10; i++) {
+    ap = new AutoCounter;
+    ac.push(ap);
+    if(i % 2 == 0)
+      ac2.push(ap);
+  }
+  while(ac2)
+    cout << ac2.pop() << endl;
+  // ”ничтожать объекты не нужно,
+  // потому что все они "принадлежат" контейнеру ac
+} ///:~

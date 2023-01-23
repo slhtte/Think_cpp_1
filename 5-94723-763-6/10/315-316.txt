@@ -1,0 +1,24 @@
+//: C10:Local.cpp
+// Статические переменные и локальные классы
+#include <iostream>
+using namespace std;
+
+// Вложенные классы МОГУТ содержать статические переменные:
+class Outer {
+  class Inner {
+    static int i; // OK
+  };
+};
+
+int Outer::Inner::i = 47;
+
+// Локальные классы не могут содержать статических переменных:
+void f() {
+  class Local {
+  public:
+//! static int i;  // Ошибка
+    // (Как определить i?)
+  } x;
+} 
+
+int main() { Outer x; f(); } ///:~

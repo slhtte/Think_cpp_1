@@ -1,0 +1,32 @@
+//: C13:MallocClass.cpp
+// Использование malloc() с объектами классов.
+// Без "new" нам пришлось бы действовать именно так
+#include "../require.h"
+#include <cstdlib> // malloc() и free()
+#include <cstring> // memset()
+#include <iostream>
+using namespace std;
+
+class Obj {
+  int i, j, k;
+  enum { sz = 100 };
+  char buf[sz];
+public:
+  void initialize() { // Нельзя использовать конструктор
+    cout << "initializing Obj" << endl;
+    i = j = k = 0;
+    memset(buf, 0, sz);
+  }
+  void destroy() const { // Нельзя использовать деструктор
+    cout << "destroying Obj" << endl;
+  }
+};
+
+int main() {
+  Obj* obj = (Obj*)malloc(sizeof(Obj));
+  require(obj != 0);
+  obj->initialize();
+  // ... когда-нибудь в будущем:
+  obj->destroy();
+  free(obj);
+} ///:~

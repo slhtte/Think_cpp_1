@@ -1,0 +1,24 @@
+//: C10:Singleton.cpp
+// Статическая переменная того же типа
+// гарантирует существование только одного экземпляра типа Egg.
+// Эта идиома также называется "синглетом".
+#include <iostream>
+using namespace std;
+
+class Egg {
+  static Egg e;
+  int i;
+  Egg(int ii) : i(ii) {}
+  Egg(const Egg&); // Предотвращает конструирование копий
+public:
+  static Egg* instance() { return &e; }
+  int val() const { return i; }
+};
+
+Egg Egg::e(47);
+
+int main() {
+//!  Egg x(1); // Ошибка -- создать экземпляр Egg нельзя
+  // Возможно только обращение к единственному существующему экземпляру:
+  cout << Egg::instance()->val() << endl;
+} ///:~

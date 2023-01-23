@@ -1,0 +1,36 @@
+CPP = g++
+OFLAG = -o
+.SUFFIXES : .o .cpp .c
+.cpp.o :
+    $(CPP) $(CPPFLAGS) -c $<
+.c.o :
+    $(CPP) $(CPPFLAGS) -c $<
+
+all: \
+    Return \
+Declare \
+    Ifthen \
+    Guess \
+    Guess2 \
+# Остальные файлы этой главы не показаны
+
+Return: Return.o
+    $(CPP) $(OFLAG) Return Return.o
+
+Declare: Declare.o
+    $(CPP) $(OFLAG) Declare Declare.o
+
+Ifthen: Ifthen.o
+    $(CPP) $(OFLAG)Ifthen Ifthen.o
+
+Guess: Guess.o
+    $(CPP) $(OFLAG)Guess Guess.o
+
+Guess2: Guess2.o
+    $(CPP) $(OFLAG)Guess2 Guess2.o
+
+Return.o: Return.cpp
+Declare.o: Declare.cpp
+Ifthen.o: Ifthen.cpp
+Guess.o: Guess.cpp
+Guess2.o: Guess2.cpp
